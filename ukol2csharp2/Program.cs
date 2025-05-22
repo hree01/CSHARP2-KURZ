@@ -19,6 +19,7 @@ class Program
     static void Main(string[] args)
     {
         List<Event> udalosti = new List<Event>();
+        Dictionary<DateTime, int> statistiky = new Dictionary<DateTime, int>();
         string vstup;
 
         Console.WriteLine("Zadej událost (EVENT;jméno;datum), LIST, STATS nebo END:");
@@ -55,15 +56,6 @@ class Program
                     Console.WriteLine("Žádné události nejsou uloženy - nejsou ani statistiky.");
                     continue;
                 }
-                Dictionary<DateTime, int> statistiky = new Dictionary<DateTime, int>();
-
-                foreach (var udalost in udalosti)
-                {
-                    if (statistiky.ContainsKey(udalost.Datum))
-                        statistiky[udalost.Datum]++;
-                    else
-                        statistiky[udalost.Datum] = 1;
-                }
 
                 foreach (var pair in statistiky)
                 {
@@ -75,7 +67,7 @@ class Program
                 try
                 {
                     Event novaUdalost = new Event(vstup);
-                    udalosti.Add(novaUdalost);
+                    AddEvent(novaUdalost, statistiky, udalosti);
                     Console.WriteLine("Událost byla úspěšně přidána.");
                 }
                 catch (Exception exception)
@@ -87,6 +79,16 @@ class Program
             {
                 Console.WriteLine("Neznámý příkaz. Zadej \"EVENT;jmeno udalosti;yyyy-mm-dd\", \"LIST\", \"STATS\" nebo \"END\".");
             }
+        }
+
+        static void AddEvent(Event udalost, Dictionary<DateTime, int> statistiky, List<Event> udalosti)
+        {
+            udalosti.Add(udalost);
+
+            if (statistiky.ContainsKey(udalost.Datum))
+                statistiky[udalost.Datum]++;
+            else
+                statistiky[udalost.Datum] = 1;
         }
     }
 }
