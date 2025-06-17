@@ -25,6 +25,11 @@ namespace sprava_domacich_mazlicku
             string vstup;
 
             Console.WriteLine("- Přidej mazlíčka do databáze: ADD;[jméno];[druh];[věk];[oblíbené jídlo]\n"
+                        + "- Změň jméno mazlíčka: CHNAME;[původní jméno];[druh];[nové jméno]\n"
+                        + "- Změň druh mazlíčka: CHTYPE;[jméno];[původní druh];[nový druh]\n"
+                        + "- Přidej mazlíčkovi rok k věku: TOAGE;[jméno];[druh]\n"
+                        + "- Prohlédni si info o mazlíčkovi: INFO;[jméno]\n"
+                        + "- Vymaž mazlíčka ze seznamu: DELETE;[jméno];[druh]\n"
                         + "- Vypiš všechny mazlíčky: LIST\n"
                         + "- Vypiš statistiky: STATS\n"
                         + "- Hledej podle klíčového slova (jméno nebo druh mazla): FIND;[klíčové slovo]\n"
@@ -42,6 +47,27 @@ namespace sprava_domacich_mazlicku
                 {
                     Console.WriteLine("Program ukončen.");
                     break;
+                }
+
+                else if (vstup.StartsWith("CHNAME", StringComparison.OrdinalIgnoreCase))
+                {
+                    // TODO
+                }
+                else if (vstup.StartsWith("CHTYPE", StringComparison.OrdinalIgnoreCase))
+                {
+                    // TODO
+                }
+                else if (vstup.StartsWith("TOAGE", StringComparison.OrdinalIgnoreCase))
+                {
+                    // TODO
+                }
+                else if (vstup.StartsWith("INFO", StringComparison.OrdinalIgnoreCase))
+                {
+                    // TODO
+                }
+                else if (vstup.StartsWith("DELETE", StringComparison.OrdinalIgnoreCase))
+                {
+                    // TODO
                 }
                 else if (vstup.ToUpper() == "LIST")
                 {
@@ -130,6 +156,11 @@ namespace sprava_domacich_mazlicku
                 {
                     Console.WriteLine("Neznámý příkaz. Seznam povolených příkazů:\n"
                         + "- Přidej mazlíčka: ADD;[jméno];[druh];[věk];[oblíbené jídlo]\n"
+                        + "- Změň jméno mazlíčka: CHNAME;[původní jméno];[druh];[nové jméno]\n"
+                        + "- Změň druh mazlíčka: CHTYPE;[jméno];[původní druh];[nový druh]\n"
+                        + "- Přidej mazlíčkovi rok k věku: TOAGE;[jméno];[druh]\n"
+                        + "- Prohlédni si info o mazlíčkovi: INFO;[jméno]\n"
+                        + "- Vymaž mazlíčka ze seznamu: DELETE;[jméno];[druh]\n"
                         + "- Vypiš všechny mazlíčky: LIST\n"
                         + "- Vypiš statistiky: STATS\n"
                         + "- Hledej podle klíčového slova (jméno nebo druh mazla): FIND;[klíčové slovo]\n"
