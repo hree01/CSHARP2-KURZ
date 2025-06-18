@@ -82,7 +82,6 @@ namespace sprava_domacich_mazlicku
                 }
                 else if (vstup.StartsWith("CHTYPE", StringComparison.OrdinalIgnoreCase))
                 {
-                    // TODO
                     // očekáváný formát: CHTYPE;[jméno];[původní druh];[nový druh]
                     string[] casti = vstup.Split(';');
                     if (casti.Length != 4)
@@ -111,7 +110,6 @@ namespace sprava_domacich_mazlicku
                 }
                 else if (vstup.StartsWith("TOAGE", StringComparison.OrdinalIgnoreCase))
                 {
-                    // TODO
                     // očekáváný formát: TOAGE;[jméno];[druh]
                     string[] casti = vstup.Split(';');
                     if (casti.Length != 3)
@@ -135,6 +133,36 @@ namespace sprava_domacich_mazlicku
                 else if (vstup.StartsWith("INFO", StringComparison.OrdinalIgnoreCase))
                 {
                     // TODO
+                    // očekáváný formát: INFO;[jméno]
+                    string[] casti = vstup.Split(';');
+                    if (casti.Length != 2)
+                    {
+                        Console.WriteLine("Neplatný formát. Zadej příkaz ve tvaru: INFO;[jméno]");
+                        continue;
+                    }
+                    else if (string.IsNullOrWhiteSpace(casti[1]))
+                    {
+                        Console.WriteLine("Nezadal jsi jméno mazlíčka, o kterém chceš zobrazit info.");
+                        continue;
+                    }
+
+                    string hledaneJmeno = casti[1].Trim().ToLower();
+
+                    var nalezeniMazlicci = mazlicci
+                        // kontrola všech jmen mazlíčků, jesli se rovnají hledanému:
+                        .Where(m => m.Jmeno.ToLower().Equals(hledaneJmeno))
+                        // zařazení do seznamu, který bude v dalším kroku vypsán
+                        .ToList();
+
+                    Console.WriteLine($"\nMazlíček/mazlíčci se jménem \"{casti[1]}\":");
+                    foreach (Mazlicek mazlicek in nalezeniMazlicci)
+                    {
+                        mazlicek.ZobrazInformace();
+                    }
+
+                    if (!nalezeniMazlicci.Any())
+                        Console.WriteLine($"...\nMazlíček se jménem {casti[1]} nenalezen.");
+
                 }
                 else if (vstup.StartsWith("DELETE", StringComparison.OrdinalIgnoreCase))
                 {
