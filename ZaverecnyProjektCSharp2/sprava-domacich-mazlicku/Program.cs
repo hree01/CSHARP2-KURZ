@@ -51,15 +51,72 @@ namespace sprava_domacich_mazlicku
 
                 else if (vstup.StartsWith("CHNAME", StringComparison.OrdinalIgnoreCase))
                 {
-                    // TODO
+                    // očekáváný formát: CHNAME;[původní jméno];[druh];[nové jméno]
+                    string[] casti = vstup.Split(';');
+                    if (casti.Length != 4)
+                    {
+                        throw new ArgumentException("Neplatný formát. Zadej příkaz ve tvaru: CHNAME;[původní jméno];[druh];[nové jméno]");
+                    }
+                    string stareJmeno = casti[1].Trim();
+                    string druh = casti[2].Trim();
+                    string noveJmeno = casti[3].Trim();
+
+                    // hledám mazla v seznamu
+                    var mazlicek = Mazlicek.Najdi(mazlicci, stareJmeno, druh);
+                    // když tam není, upozorním uživatele
+                    if (mazlicek == null)
+                    {
+                        Console.WriteLine($"Mazlíček {stareJmeno} ({druh}) nebyl nalezen.");
+                        continue;
+                    }
+
+                    mazlicek.ZmenJmeno(noveJmeno);
+                    Console.WriteLine($"Jméno mazlíčka {stareJmeno} ({druh}) bylo změněno na {noveJmeno}.");
                 }
                 else if (vstup.StartsWith("CHTYPE", StringComparison.OrdinalIgnoreCase))
                 {
                     // TODO
+                    // očekáváný formát: CHTYPE;[jméno];[původní druh];[nový druh]
+                    string[] casti = vstup.Split(';');
+                    if (casti.Length != 4)
+                    {
+                        throw new ArgumentException("Neplatný formát. Zadej příkaz ve tvaru: CHTYPE;[jméno];[původní druh];[nový druh]");
+                    }
+                    string jmeno = casti[1].Trim();
+                    string staryDruh = casti[2].Trim();
+                    string novyDruh = casti[3].Trim();
+
+                    var mazlicek = Mazlicek.Najdi(mazlicci, jmeno, staryDruh);
+                    if (mazlicek == null)
+                    {
+                        Console.WriteLine($"Mazlíček {jmeno} ({staryDruh}) nebyl nalezen.");
+                        continue;
+                    }
+
+                    mazlicek.ZmenDruh(novyDruh);
+                    Console.WriteLine($"Druh mazlíčka {jmeno} ({staryDruh}) byl změněn na {novyDruh}.");
                 }
                 else if (vstup.StartsWith("TOAGE", StringComparison.OrdinalIgnoreCase))
                 {
                     // TODO
+                    // očekáváný formát: TOAGE;[jméno];[druh]
+                    string[] casti = vstup.Split(';');
+                    if (casti.Length != 3)
+                    {
+                        throw new ArgumentException("Neplatný formát. Zadej příkaz ve tvaru: TOAGE;[jméno];[druh]");
+                    }
+                    string jmeno = casti[1].Trim();
+                    string druh = casti[2].Trim();
+
+                    var mazlicek = Mazlicek.Najdi(mazlicci, jmeno, druh);
+                    if (mazlicek == null)
+                    {
+                        Console.WriteLine($"Mazlíček {jmeno} ({druh}) nebyl nalezen.");
+                        continue;
+                    }
+
+                    mazlicek.Zestarnout();
+
                 }
                 else if (vstup.StartsWith("INFO", StringComparison.OrdinalIgnoreCase))
                 {
@@ -97,7 +154,7 @@ namespace sprava_domacich_mazlicku
                     // průměrný věk (pro přesnost v double)
                     double prumernyVek = mazlicci.Select(m => m.Vek).Average();
                     // vysledek zaokrouhlim na cele cislo
-                    Console.WriteLine($"Průměrný věk zapsaných mazlíčků: {Math.Round(prumernyVek)}");
+                    Console.WriteLine($"Průměrný věk zapsaných mazlíčků: {prumernyVek}");
 
 
 
@@ -144,6 +201,20 @@ namespace sprava_domacich_mazlicku
                     try
                     {
                         Mazlicek novyMazel = new Mazlicek(vstup);
+
+                        // Kontrola - nový mazel nesmí mít stejné jméno a zároveň druh s již existujícími mazlíčky
+                        bool existujeTakovyMazlicek = mazlicci.Any(m =>
+                                        m.Jmeno.Equals(novyMazel.Jmeno, StringComparison.OrdinalIgnoreCase) &&
+                                        m.Druh.Equals(novyMazel.Druh, StringComparison.OrdinalIgnoreCase));
+
+                        if (existujeTakovyMazlicek)
+                        {
+                            Console.WriteLine($"Mazlíček se jménem {novyMazel.Jmeno} a druhem {novyMazel.Druh} už existuje. Vždyť by byli všichni zmatení. Zkus to jinak.");
+                            continue;
+                            // TODO: Momentálně mazlíček bude pořád v paměti programu, i když není v seznamu - musím dořešit později.
+                        }
+
+                        // Když je všechno v pořádku, přidám mazlíka do seznamu
                         mazlicci.Add(novyMazel);
                         Console.WriteLine("Mazlíček byl úspěšně přidán do seznamu.");
                     }

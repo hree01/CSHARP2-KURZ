@@ -50,6 +50,14 @@ namespace sprava_domacich_mazlicku
 
         }
 
+        // metoda pro hledání mazlíčka v seznamu mazlíčků, může vracet null, pokud nenajde žádného mazla
+        public static Mazlicek Najdi(List<Mazlicek> seznam, string jmeno, string druh)
+        {
+            return seznam.FirstOrDefault(m =>
+            m.Jmeno.Equals(jmeno, StringComparison.OrdinalIgnoreCase) &&
+            m.Druh.Equals(druh, StringComparison.OrdinalIgnoreCase));
+        }
+
         // Metoda pro zobrazení všech informací pod sebou
         public void ZobrazInformace()
         {
@@ -70,6 +78,14 @@ namespace sprava_domacich_mazlicku
         {
             Vek++;
             Console.WriteLine($"\nTak {Jmeno} je zase o rok starší... Už je mu {Vek} let.");
+        }
+        public void ZmenJmeno(string noveJmeno)
+        {
+            Jmeno = noveJmeno;
+        }
+        public void ZmenDruh(string novyDruh)
+        {
+            Druh = novyDruh;
         }
     }
 }
