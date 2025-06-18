@@ -10,20 +10,13 @@ namespace sprava_domacich_mazlicku
     {
         static void Main()
         {
-            // Vytvoření prvního mazlíčka
-            Mazlicek pesBertik = new Mazlicek("ADD;Bertík;pes;3;masíčko");
-
-            // Zobrazení informací
-            pesBertik.ZobrazInformace();
-
-            // Zestárnutí        
-            pesBertik.Zestarnout();
-
-            // Kontrola informací
-            pesBertik.ZobrazInformace();
 
             List<Mazlicek> mazlicci = new List<Mazlicek>();
             string vstup;
+
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Vítej ve správci domácích mazlíčků!");
+            Console.ResetColor();
 
             Console.WriteLine("- Přidej mazlíčka do databáze: ADD;[jméno];[druh];[věk];[oblíbené jídlo]\n"
                         + "- Změň jméno mazlíčka: CHNAME;[původní jméno];[druh];[nové jméno]\n"
@@ -46,7 +39,9 @@ namespace sprava_domacich_mazlicku
 
                 if (vstup.ToUpper() == "END")
                 {
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.WriteLine("Program ukončen.");
+                    Console.ResetColor();
                     break;
                 }
 
@@ -57,12 +52,16 @@ namespace sprava_domacich_mazlicku
 
                     if (casti.Length != 4)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Neplatný formát. Zadej příkaz ve tvaru: CHNAME;[původní jméno];[druh];[nové jméno]");
+                        Console.ResetColor();
                         continue;
                     }
                     else if (string.IsNullOrWhiteSpace(casti[1]) || string.IsNullOrWhiteSpace(casti[2]) || string.IsNullOrWhiteSpace(casti[3]))
                     {
+                        Console.ForegroundColor = ConsoleColor.Blue;
                         Console.WriteLine("Všechna pole musí být vyplněna. Zadej příkaz ve tvaru: CHNAME;[původní jméno];[druh];[nové jméno]");
+                        Console.ResetColor();
                         continue;
                     }
                     string stareJmeno = casti[1].Trim();
@@ -74,12 +73,16 @@ namespace sprava_domacich_mazlicku
                     // když tam není, upozorním uživatele
                     if (mazlicek == null)
                     {
+                        Console.ForegroundColor = ConsoleColor.Blue;
                         Console.WriteLine($"Mazlíček {stareJmeno} ({druh}) nebyl nalezen.");
+                        Console.ResetColor();
                         continue;
                     }
 
                     mazlicek.ZmenJmeno(noveJmeno);
+                    Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"Jméno mazlíčka {stareJmeno} ({druh}) bylo změněno na {noveJmeno}.");
+                    Console.ResetColor();
                 }
                 else if (vstup.StartsWith("CHTYPE", StringComparison.OrdinalIgnoreCase))
                 {
@@ -87,12 +90,16 @@ namespace sprava_domacich_mazlicku
                     string[] casti = vstup.Split(';');
                     if (casti.Length != 4)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Neplatný formát. Zadej příkaz ve tvaru: CHTYPE;[jméno];[původní druh];[nový druh]");
+                        Console.ResetColor();
                         continue;
                     }
                     else if (string.IsNullOrWhiteSpace(casti[1]) || string.IsNullOrWhiteSpace(casti[2]) || string.IsNullOrWhiteSpace(casti[3]))
                     {
+                        Console.ForegroundColor = ConsoleColor.Blue;
                         Console.WriteLine("Všechna pole musí být vyplněna. Zadej příkaz ve tvaru: CHTYPE;[jméno];[původní druh];[nový druh]");
+                        Console.ResetColor();
                         continue;
                     }
                     string jmeno = casti[1].Trim();
@@ -102,12 +109,16 @@ namespace sprava_domacich_mazlicku
                     var mazlicek = Mazlicek.Najdi(mazlicci, jmeno, staryDruh);
                     if (mazlicek == null)
                     {
+                        Console.ForegroundColor = ConsoleColor.Blue;
                         Console.WriteLine($"Mazlíček {jmeno} ({staryDruh}) nebyl nalezen.");
+                        Console.ResetColor();
                         continue;
                     }
 
                     mazlicek.ZmenDruh(novyDruh);
+                    Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($"Druh mazlíčka {jmeno} ({staryDruh}) byl změněn na {novyDruh}.");
+                    Console.ResetColor();
                 }
                 else if (vstup.StartsWith("TOAGE", StringComparison.OrdinalIgnoreCase))
                 {
@@ -115,7 +126,9 @@ namespace sprava_domacich_mazlicku
                     string[] casti = vstup.Split(';');
                     if (casti.Length != 3)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Neplatný formát. Zadej příkaz ve tvaru: TOAGE;[jméno];[druh]");
+                        Console.ResetColor();
                         continue;
                     }
                     string jmeno = casti[1].Trim();
@@ -124,7 +137,9 @@ namespace sprava_domacich_mazlicku
                     var mazlicek = Mazlicek.Najdi(mazlicci, jmeno, druh);
                     if (mazlicek == null)
                     {
+                        Console.ForegroundColor = ConsoleColor.Blue;
                         Console.WriteLine($"Mazlíček {jmeno} ({druh}) nebyl nalezen.");
+                        Console.ResetColor();
                         continue;
                     }
 
@@ -137,12 +152,16 @@ namespace sprava_domacich_mazlicku
                     string[] casti = vstup.Split(';');
                     if (casti.Length != 2)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Neplatný formát. Zadej příkaz ve tvaru: INFO;[jméno]");
+                        Console.ResetColor();
                         continue;
                     }
                     else if (string.IsNullOrWhiteSpace(casti[1]))
                     {
+                        Console.ForegroundColor = ConsoleColor.Blue;
                         Console.WriteLine("Nezadal jsi jméno mazlíčka, o kterém chceš zobrazit info.");
+                        Console.ResetColor();
                         continue;
                     }
 
@@ -161,7 +180,11 @@ namespace sprava_domacich_mazlicku
                     }
 
                     if (!nalezeniMazlicci.Any())
+                    {
+                        Console.ForegroundColor = ConsoleColor.Blue;
                         Console.WriteLine($"...\nMazlíček se jménem {casti[1]} nenalezen.");
+                        Console.ResetColor();
+                    }
 
                 }
                 else if (vstup.StartsWith("DELETE", StringComparison.OrdinalIgnoreCase))
@@ -171,7 +194,9 @@ namespace sprava_domacich_mazlicku
 
                     if (casti.Length != 3)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Neplatný formát. Zadej příkaz ve tvaru: DELETE;[jméno];[druh]");
+                        Console.ResetColor();
                         continue;
                     }
 
@@ -180,7 +205,9 @@ namespace sprava_domacich_mazlicku
 
                     if (string.IsNullOrWhiteSpace(jmeno) || string.IsNullOrWhiteSpace(druh))
                     {
+                        Console.ForegroundColor = ConsoleColor.Blue;
                         Console.WriteLine("Musíš zadat jak jméno, tak druh mazlíčka.");
+                        Console.ResetColor();
                         continue;
                     }
 
@@ -188,7 +215,9 @@ namespace sprava_domacich_mazlicku
 
                     if (mazlicek == null)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine($"Mazlíček {jmeno} ({druh}) nebyl nalezen, takže nemohl být smazán.");
+                        Console.ResetColor();
                         continue;
                     }
 
@@ -197,11 +226,15 @@ namespace sprava_domacich_mazlicku
                     if (potvrzeni != null && potvrzeni.ToLower().Equals("y"))
                     {
                         mazlicci.Remove(mazlicek);
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"Mazlíček {jmeno} ({druh}) byl úspěšně odebrán ze seznamu.");
+                        Console.ResetColor();
                     }
                     else
                     {
+                        Console.ForegroundColor = ConsoleColor.Blue;
                         Console.WriteLine($"Nepotvrdil jsi operaci. Mazlíček {jmeno} ({druh}) NEBYL odebrán ze seznamu.");
+                        Console.ResetColor();
                     }
 
                 }
@@ -209,7 +242,9 @@ namespace sprava_domacich_mazlicku
                 {
                     if (mazlicci.Count == 0)
                     {
+                        Console.ForegroundColor = ConsoleColor.Blue;
                         Console.WriteLine("Zatím žádní mazlíčci. Přidej nějakého.");
+                        Console.ResetColor();
                         continue;
                     }
                     // výpis mazlíčků podle jmen
@@ -228,7 +263,11 @@ namespace sprava_domacich_mazlicku
 
                     // počet mazlů
                     int pocetMazliku = mazlicci.Count;
-                    Console.WriteLine($"\nStatistiky:\nPočet zapsaných mazlíčků: {pocetMazliku}");
+                    Console.BackgroundColor = ConsoleColor.DarkBlue;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine($"\nStatistiky:");
+                    Console.ResetColor();
+                    Console.WriteLine($"\nPočet zapsaných mazlíčků: {pocetMazliku}");
 
                     // průměrný věk (pro přesnost v double)
                     double prumernyVek = mazlicci.Select(m => m.Vek).Average();
@@ -254,7 +293,9 @@ namespace sprava_domacich_mazlicku
                     string[] casti = vstup.Split(';');
                     if (casti.Length != 2 || string.IsNullOrWhiteSpace(casti[1]))
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Neplatný formát příkazu FIND. Zadej příkaz ve tvaru FIND;slovo");
+                        Console.ResetColor();
                         continue;
                     }
 
@@ -266,14 +307,21 @@ namespace sprava_domacich_mazlicku
                         // zařazení do seznamu, který bude v dalším kroku vypsán
                         .ToList();
 
+                    Console.BackgroundColor = ConsoleColor.DarkBlue;
+                    Console.ForegroundColor = ConsoleColor.White;
                     Console.WriteLine($"\nVýsledky hledání pro \"{hledane}\":");
+                    Console.ResetColor();
                     foreach (Mazlicek mazlicek in nalezeniMazlicci)
                     {
                         Console.WriteLine($" - {mazlicek.VypisInfo()}");
                     }
 
                     if (!nalezeniMazlicci.Any())
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine(" - Nenalezeno.");
+                        Console.ResetColor();
+                    }
                 }
                 else if (vstup.StartsWith("ADD", StringComparison.OrdinalIgnoreCase))
                 {
@@ -288,18 +336,24 @@ namespace sprava_domacich_mazlicku
 
                         if (existujeTakovyMazlicek)
                         {
+                            Console.ForegroundColor = ConsoleColor.Red;
                             Console.WriteLine($"Mazlíček se jménem {novyMazel.Jmeno} a druhem {novyMazel.Druh} už existuje. Vždyť by byli všichni zmatení. Zkus to jinak.");
+                            Console.ResetColor();
                             continue;
-                            // TODO: Momentálně mazlíček bude pořád v paměti programu, i když není v seznamu - musím dořešit později.
+                            // TODO: Momentálně mazlíček bude pořád v paměti programu, i když není v seznamu - musím dořešit později. Ale měl by se o to postarat .NET garbage collector
                         }
 
                         // Když je všechno v pořádku, přidám mazlíka do seznamu
                         mazlicci.Add(novyMazel);
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine("Mazlíček byl úspěšně přidán do seznamu.");
+                        Console.ResetColor();
                     }
                     catch (Exception exception)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Chyba: " + exception.Message);
+                        Console.ResetColor();
                     }
                 }
                 else
