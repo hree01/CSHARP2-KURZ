@@ -34,6 +34,10 @@ namespace sprava_domacich_mazlicku
             {
                 throw new ArgumentException("Neplatný formát. Zadej příkaz ve tvaru: ADD;[jméno];[druh];[věk];[oblíbené jídlo]");
             }
+            else if (string.IsNullOrWhiteSpace(casti[1]) || string.IsNullOrWhiteSpace(casti[2]) || string.IsNullOrWhiteSpace(casti[3]) || string.IsNullOrWhiteSpace(casti[4]))
+            {
+                throw new ArgumentException("Všechna pole musí být vyplněna. Zadej příkaz ve tvaru: ADD;[jméno];[druh];[věk];[oblíbené jídlo]");
+            }
 
             Jmeno = casti[1].Trim();
             Druh = casti[2].Trim();

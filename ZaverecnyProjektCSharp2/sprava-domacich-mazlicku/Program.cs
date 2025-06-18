@@ -53,9 +53,16 @@ namespace sprava_domacich_mazlicku
                 {
                     // očekáváný formát: CHNAME;[původní jméno];[druh];[nové jméno]
                     string[] casti = vstup.Split(';');
+
                     if (casti.Length != 4)
                     {
-                        throw new ArgumentException("Neplatný formát. Zadej příkaz ve tvaru: CHNAME;[původní jméno];[druh];[nové jméno]");
+                        Console.WriteLine("Neplatný formát. Zadej příkaz ve tvaru: CHNAME;[původní jméno];[druh];[nové jméno]");
+                        continue;
+                    }
+                    else if (string.IsNullOrWhiteSpace(casti[1]) || string.IsNullOrWhiteSpace(casti[2]) || string.IsNullOrWhiteSpace(casti[3]))
+                    {
+                        Console.WriteLine("Všechna pole musí být vyplněna. Zadej příkaz ve tvaru: CHNAME;[původní jméno];[druh];[nové jméno]");
+                        continue;
                     }
                     string stareJmeno = casti[1].Trim();
                     string druh = casti[2].Trim();
@@ -80,7 +87,13 @@ namespace sprava_domacich_mazlicku
                     string[] casti = vstup.Split(';');
                     if (casti.Length != 4)
                     {
-                        throw new ArgumentException("Neplatný formát. Zadej příkaz ve tvaru: CHTYPE;[jméno];[původní druh];[nový druh]");
+                        Console.WriteLine("Neplatný formát. Zadej příkaz ve tvaru: CHTYPE;[jméno];[původní druh];[nový druh]");
+                        continue;
+                    }
+                    else if (string.IsNullOrWhiteSpace(casti[1]) || string.IsNullOrWhiteSpace(casti[2]) || string.IsNullOrWhiteSpace(casti[3]))
+                    {
+                        Console.WriteLine("Všechna pole musí být vyplněna. Zadej příkaz ve tvaru: CHTYPE;[jméno];[původní druh];[nový druh]");
+                        continue;
                     }
                     string jmeno = casti[1].Trim();
                     string staryDruh = casti[2].Trim();
@@ -103,7 +116,8 @@ namespace sprava_domacich_mazlicku
                     string[] casti = vstup.Split(';');
                     if (casti.Length != 3)
                     {
-                        throw new ArgumentException("Neplatný formát. Zadej příkaz ve tvaru: TOAGE;[jméno];[druh]");
+                        Console.WriteLine("Neplatný formát. Zadej příkaz ve tvaru: TOAGE;[jméno];[druh]");
+                        continue;
                     }
                     string jmeno = casti[1].Trim();
                     string druh = casti[2].Trim();
