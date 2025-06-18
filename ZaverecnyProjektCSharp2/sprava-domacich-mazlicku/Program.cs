@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.Arm;
 using System.Threading.Tasks;
 
 namespace sprava_domacich_mazlicku
@@ -132,7 +133,6 @@ namespace sprava_domacich_mazlicku
                 }
                 else if (vstup.StartsWith("INFO", StringComparison.OrdinalIgnoreCase))
                 {
-                    // TODO
                     // očekáváný formát: INFO;[jméno]
                     string[] casti = vstup.Split(';');
                     if (casti.Length != 2)
@@ -166,7 +166,44 @@ namespace sprava_domacich_mazlicku
                 }
                 else if (vstup.StartsWith("DELETE", StringComparison.OrdinalIgnoreCase))
                 {
-                    // TODO
+                    // očekáváný formát: DELETE;[jméno];[druh]
+                    string[] casti = vstup.Split(';');
+
+                    if (casti.Length != 3)
+                    {
+                        Console.WriteLine("Neplatný formát. Zadej příkaz ve tvaru: DELETE;[jméno];[druh]");
+                        continue;
+                    }
+
+                    string jmeno = casti[1].Trim();
+                    string druh = casti[2].Trim();
+
+                    if (string.IsNullOrWhiteSpace(jmeno) || string.IsNullOrWhiteSpace(druh))
+                    {
+                        Console.WriteLine("Musíš zadat jak jméno, tak druh mazlíčka.");
+                        continue;
+                    }
+
+                    var mazlicek = Mazlicek.Najdi(mazlicci, jmeno, druh);
+
+                    if (mazlicek == null)
+                    {
+                        Console.WriteLine($"Mazlíček {jmeno} ({druh}) nebyl nalezen, takže nemohl být smazán.");
+                        continue;
+                    }
+
+                    Console.WriteLine($"Skutečně odstranit mazlíčka {jmeno} ({druh}) ze seznamu? Pro potvrzení zadej \"y\"");
+                    var potvrzeni = Console.ReadLine();
+                    if (potvrzeni != null && potvrzeni.ToLower().Equals("y"))
+                    {
+                        mazlicci.Remove(mazlicek);
+                        Console.WriteLine($"Mazlíček {jmeno} ({druh}) byl úspěšně odebrán ze seznamu.");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Nepotvrdil jsi operaci. Mazlíček {jmeno} ({druh}) NEBYL odebrán ze seznamu.");
+                    }
+
                 }
                 else if (vstup.ToUpper() == "LIST")
                 {
