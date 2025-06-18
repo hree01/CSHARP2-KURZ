@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Intrinsics.Arm;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace sprava_domacich_mazlicku
 {
@@ -11,7 +13,14 @@ namespace sprava_domacich_mazlicku
         static void Main()
         {
 
-            List<Mazlicek> mazlicci = new List<Mazlicek>();
+            // List<Mazlicek> mazlicci = new List<Mazlicek>();
+            string cestaXml = "mazlicci.xml";
+            List<Mazlicek> mazlicci = NactiMazlickyZXml(cestaXml);
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"Načteno {mazlicci.Count} mazlíčků ze souboru.");
+            Console.ResetColor();
+
             string vstup;
 
             Console.ForegroundColor = ConsoleColor.Yellow;
@@ -39,8 +48,9 @@ namespace sprava_domacich_mazlicku
 
                 if (vstup.ToUpper() == "END")
                 {
+                    UlozMazlickyDoXml(cestaXml, mazlicci); // celý XML soubor se přepíše podle aktuálního stavu aplikace
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.WriteLine("Program ukončen.");
+                    Console.WriteLine("Seznam mazlíčků byl uložen do XML. Program ukončen.");
                     Console.ResetColor();
                     break;
                 }
@@ -372,6 +382,30 @@ namespace sprava_domacich_mazlicku
                 }
             }
 
+        }
+        static void UlozMazlickyDoXml(string cesta, List<Mazlicek> mazlicci)
+        {
+            var seznam = new SeznamMazlicku { Mazlicci = mazlicci };
+            var serializer = new XmlSerializer(typeof(SeznamMazlicku));
+
+            using (var writer = new StreamWriter(cesta))
+            {
+                serializer.Serialize(writer, seznam);
+            }
+        }
+
+        static List<Mazlicek> NactiMazlickyZXml(string cesta)
+        {
+            // při prvním spuštění soubor ještě neexistuje, vytvoří se nový seznam
+            if (!File.Exists(cesta))
+                return new List<Mazlicek>();
+
+            var serializer = new XmlSerializer(typeof(SeznamMazlicku));
+            using (var reader = new StreamReader(cesta))
+            {
+                var seznam = (SeznamMazlicku)serializer.Deserialize(reader);
+                return seznam.Mazlicci;
+            }
         }
     }
 }

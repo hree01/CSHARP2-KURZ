@@ -24,6 +24,8 @@ namespace sprava_domacich_mazlicku
         }
         public string OblibeneJidlo { get; set; }
 
+        public Mazlicek() { } // prázdný konstruktor kvůli XML
+
         // konstruktor s kontrolou vstupu od uživatele
         public Mazlicek(string vstup)
         {

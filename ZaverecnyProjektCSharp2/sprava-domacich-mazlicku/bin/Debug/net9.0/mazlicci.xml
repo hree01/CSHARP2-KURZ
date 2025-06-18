@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Mazlicci xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Mazlicek>
+    <Jmeno>Tom</Jmeno>
+    <Druh>kocour</Druh>
+    <Vek>2</Vek>
+    <OblibeneJidlo>kapsička</OblibeneJidlo>
+  </Mazlicek>
+</Mazlicci>
